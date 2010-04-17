@@ -15,7 +15,7 @@ module Appoxy
 
             def verify_signature
 
-                if request.put?
+                if request.put? || request.post?
                     # We'll extract params from body instead here
                     # todo: maybe check for json format first in case this is a file or something?
                     body = request.body.read
