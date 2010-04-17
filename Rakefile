@@ -11,7 +11,6 @@ begin
         gemspec.homepage = "http://www.appoxy.com"
         gemspec.authors = ["Travis Reeder"]
         gemspec.files = FileList['lib/**/*.rb']
-#        gemspec.add_dependency 'simple_record'
         gemspec.add_dependency 'rest-client'
     end
 rescue LoadError
