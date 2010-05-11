@@ -2,6 +2,7 @@ module Appoxy
     module Api
 
         require 'rest_client'
+         require 'cgi'
 
         # Subclass must define:
         #  host: endpoint url for service

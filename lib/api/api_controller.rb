@@ -2,15 +2,16 @@ module Appoxy
 
     module Api
 
-        # The api controllers that use this should set:
-#        protect_from_forgery :only => [] # can add methods to here, eg: :create, :update, :destroy
 
-#                rescue_from SigError, :with => :send_error
-#                rescue_from Api::ApiError, :with => :send_error
-        # before_filter :verify_signature(params)
-
-        # Your Controller must define a secret_key_for_signature method which will return the secret key to use to generate signature.
-
+        # The api controllers that use this this mixin should set:
+        # protect_from_forgery :only => [] # can add methods to here, eg: :create, :update, :destroy
+        # rescue_from SigError, :with => :send_error
+        # rescue_from Api::ApiError, :with => :send_error
+        # before_filter :verify_signature
+        #
+        # Your Controller must also define a secret_key_for_signature method
+        # which will return the secret key to use to generate signature.
+        #
         module ApiController
 
             def verify_signature
@@ -40,15 +41,16 @@ module Appoxy
                 raise Appoxy::Api::ApiError, "No timestamp" if timestamp.nil?
                 raise Appoxy::Api::ApiError, "No sig" if sig.nil?
 
-                sig2 = Appoxy::Api::Signatures.generate_signature(operation, timestamp, secret_key_for_signature(access_key))
+                skey = secret_key_for_signature(access_key)
+                sig2 = Appoxy::Api::Signatures.generate_signature(operation, timestamp, skey)
                 raise Appoxy::Api::ApiError, "Invalid signature!" unless sig == sig2
 
                 puts 'Verified OK'
 
             end
 
-            def sig_should
-                raise "You didn't define a sig_should method in your controller!"
+            def secret_key_for_signature(access_key)
+                raise "You didn't define a secret_key_for_signature method in your API controller!"
             end
 
 
