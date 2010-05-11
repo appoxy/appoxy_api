@@ -18,7 +18,6 @@ module Appoxy
 
             def get(method, params={}, options={})
                 begin
-#                ClientHelper.run_http(host, access_key, secret_key, :get, method, nil, params)
                     parse_response RestClient.get(append_params(url(method), add_params(method, params)), headers)
                 rescue RestClient::BadRequest => ex
 #                    puts ex.http_body
@@ -29,7 +28,6 @@ module Appoxy
             def post(method, params={}, options={})
                 begin
                     parse_response RestClient.post(url(method), add_params(method, params).to_json, headers)
-                    #ClientHelper.run_http(host, access_key, secret_key, :post, method, nil, params)
                 rescue RestClient::BadRequest => ex
 #                    puts ex.http_body
                     raise "Bad Request: " + ActiveSupport::JSON.decode(ex.http_body)["msg"].to_s
@@ -40,7 +38,6 @@ module Appoxy
             def put(method, body, options={})
                 begin
                     parse_response RestClient.put(url(method), add_params(method, body).to_json, headers)
-                    #ClientHelper.run_http(host, access_key, secret_key, :put, method, body, nil)
                 rescue RestClient::BadRequest => ex
 #                    puts ex.http_body
                     raise "Bad Request: " + ActiveSupport::JSON.decode(ex.http_body)["msg"].to_s
@@ -67,7 +64,7 @@ module Appoxy
                 i = 0
                 params.each_pair do |k, v|
                     host += "&" if i > 0
-                    host += k + "=" + CGI.escape(v)
+                    host += k + "=" + (v.nil? ? "" : CGI.escape(v))
                     i+=1
                 end
                 return host
