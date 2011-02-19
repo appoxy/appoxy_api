@@ -7,11 +7,18 @@ module Appoxy
     #  host: endpoint url for service
     class Client
 
+      @@logger = Logger.new(STDOUT)
+      @@logger.level = Logger::INFO
+
+      def self.logger
+        @@logger
+      end
+
       attr_accessor :host, :access_key, :secret_key
 
 
       def initialize(host, access_key, secret_key, options={})
-        @host       = host
+        @host = host
         @access_key = access_key
         @secret_key = secret_key
       end
@@ -67,9 +74,9 @@ module Appoxy
 
       # old way
       def add_params(command_path, hash)
-        ts           = Appoxy::Api::Signatures.generate_timestamp(Time.now.gmtime)
+        ts = Appoxy::Api::Signatures.generate_timestamp(Time.now.gmtime)
         # puts 'timestamp = ' + ts
-        sig          = Appoxy::Api::Signatures.generate_signature(command_path, ts, secret_key)
+        sig = Appoxy::Api::Signatures.generate_signature(command_path, ts, secret_key)
 
         extra_params = {'sigv'=>"0.1", 'sig' => sig, 'timestamp' => ts, 'access_key' => access_key}
         hash.merge!(extra_params)
@@ -89,11 +96,11 @@ module Appoxy
 
       def append_params(host, params)
         host += "?"
-        i    = 0
+        i = 0
         params.each_pair do |k, v|
           host += "&" if i > 0
           host += k + "=" + CGI.escape(v)
-          i    +=1
+          i +=1
         end
         return host
       end
@@ -101,7 +108,7 @@ module Appoxy
 
       def headers
         user_agent = "Appoxy API Ruby Client"
-        headers    = {'User-Agent' => user_agent}
+        headers = {'User-Agent' => user_agent}
       end
 
 
