@@ -27,17 +27,18 @@ module Appoxy
       def get(method, params={}, options={})
         begin
 #                ClientHelper.run_http(host, access_key, secret_key, :get, method, nil, params)
-          parse_response RestClient.get(append_params(url(method), add_params(method, params)), headers)
+          parse_response RestClient.get(append_params(url(method), add_params(method, params)), headers), options
         rescue RestClient::BadRequest => ex
 #                    puts ex.http_body
           raise "Bad Request: " + ActiveSupport::JSON.decode(ex.http_body)["msg"].to_s
         end
+
       end
 
 
       def post(method, params={}, options={})
         begin
-          parse_response RestClient.post(url(method), add_params(method, params).to_json, headers)
+          parse_response RestClient.post(url(method), add_params(method, params).to_json, headers), options
           #ClientHelper.run_http(host, access_key, secret_key, :post, method, nil, params)
         rescue RestClient::BadRequest => ex
 #                    puts ex.http_body
@@ -49,7 +50,7 @@ module Appoxy
 
       def put(method, body, options={})
         begin
-          parse_response RestClient.put(url(method), add_params(method, body).to_json, headers)
+          parse_response RestClient.put(url(method), add_params(method, body).to_json, headers), options
           #ClientHelper.run_http(host, access_key, secret_key, :put, method, body, nil)
         rescue RestClient::BadRequest => ex
 #                    puts ex.http_body
@@ -60,7 +61,7 @@ module Appoxy
 
       def delete(method, params={}, options={})
         begin
-          parse_response RestClient.delete(append_params(url(method), add_params(method, params)))
+          parse_response RestClient.delete(append_params(url(method), add_params(method, params))), options
         rescue RestClient::BadRequest => ex
           raise "Bad Request: " + ActiveSupport::JSON.decode(ex.http_body)["msg"].to_s
         end
@@ -112,12 +113,16 @@ module Appoxy
       end
 
 
-      def parse_response(response)
-        begin
-          return ActiveSupport::JSON.decode(response.to_s)
-        rescue => ex
-          puts 'response that caused error = ' + response.to_s
-          raise ex
+      def parse_response(response, options={})
+        unless options[:parse] == false
+          begin
+            return ActiveSupport::JSON.decode(response.to_s)
+          rescue => ex
+            puts 'response that caused error = ' + response.to_s
+            raise ex
+          end
+        else
+          response
         end
       end
 
