@@ -17,7 +17,7 @@ module Appoxy
 
       def self.hash_to_s(hash)
         str = ""
-        hash.each_pair { |key, value| str+= "#{key}#{value}" }
+        hash.sort.each { |a| str+= "#{a[0]}#{a[1]}" }
         #removing all characters that could differ after parsing with rails
         return str.delete "\"\/:{}[]\' T"
       end
