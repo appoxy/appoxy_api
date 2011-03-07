@@ -1,3 +1,4 @@
+require 'digest/hmac'
 module Appoxy
   module Api
     module Signatures

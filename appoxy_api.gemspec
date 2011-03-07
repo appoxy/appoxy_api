@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{appoxy_api}
-  s.version = "0.0.9"
+  s.version = "0.0.10"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Travis Reeder"]
-  s.date = %q{2011-02-21}
+  s.date = %q{2011-03-06}
   s.description = %q{Appoxy API Helper gem description...}
   s.email = %q{travis@appoxy.com}
   s.extra_rdoc_files = [
@@ -23,7 +23,7 @@ Gem::Specification.new do |s|
   ]
   s.homepage = %q{http://www.appoxy.com}
   s.require_paths = ["lib"]
-  s.rubygems_version = %q{1.5.2}
+  s.rubygems_version = %q{1.6.0}
   s.summary = %q{Appoxy API Helper gem}
 
   if s.respond_to? :specification_version then

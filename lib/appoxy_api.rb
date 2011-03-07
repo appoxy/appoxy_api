@@ -1,5 +1,4 @@
-require 'active_support/core_ext'
-require 'digest/hmac'
+#require 'active_support/core_ext'
 require 'net/http'
 require 'base64'
 

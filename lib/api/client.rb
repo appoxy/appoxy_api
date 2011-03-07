@@ -1,3 +1,5 @@
+require 'logger'
+
 module Appoxy
   module Api
 
