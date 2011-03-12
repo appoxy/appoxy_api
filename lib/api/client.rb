@@ -36,6 +36,13 @@ module Appoxy
 
       end
 
+      def post_file(method, file, params={}, options={})
+        begin
+          parse_response RestClient.post(url(method), add_params(method, params).merge!({:file=>file}), :multipart => true), options
+        rescue RestClient::BadRequest => ex
+          raise "Bad Request: " + ActiveSupport::JSON.decode(ex.http_body)["msg"].to_s
+        end
+      end
 
       def post(method, params={}, options={})
         begin
