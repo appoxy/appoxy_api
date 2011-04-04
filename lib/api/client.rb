@@ -85,6 +85,8 @@ module Appoxy
         ts           = Appoxy::Api::Signatures.generate_timestamp(Time.now.gmtime)
         # puts 'timestamp = ' + ts
         sig          = case v
+          when "0.3"#only for ssl version
+            Appoxy::Api::Signatures.generate_signature("", ts, secret_key)
           when "0.2"
             Appoxy::Api::Signatures.generate_signature(command_path + Appoxy::Api::Signatures.hash_to_s(hash), ts, secret_key)
           when "0.1"
