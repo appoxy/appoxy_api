@@ -1,8 +1,7 @@
-
 require './lib/appoxy_api.rb'
 
 begin
-    require 'jeweler'
+    require 'jeweler2'
     Jeweler::Tasks.new do |gemspec|
         gemspec.name = "appoxy_api"
         gemspec.summary = "Appoxy API Helper gem"
